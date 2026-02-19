@@ -1,3 +1,18 @@
+# nextjs-16-example
+
+This example demonstrates Next.js core features as of early 2026:
+
+- App Router
+- React Server Components
+- Server Actions
+- Streaming & Suspense
+- Cache Components — The new caching model (Next.js 16)
+
+> Prerequisites - Setup the small PostgreSQL media-database at
+[Neon](https://neon.com/) following the directions at:
+https://github.com/reyarqueza/media-database
+
+## below was from the original README.md
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
