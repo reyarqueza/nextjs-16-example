@@ -54,3 +54,12 @@ https://github.com/reyarqueza/media-database
 
 No need to clone.
 Copy and paste the SQL scripts into Neon as instructed by the [README.md](https://github.com/reyarqueza/media-database)
+
+## 6. The usual setup
+```bash
+pnpm install
+```
+
+```bash
+pnpm run dev
+```
