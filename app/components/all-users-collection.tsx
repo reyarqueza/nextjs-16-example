@@ -20,9 +20,6 @@ async function allUsersCollection(): Promise<UsersCollection[]> {
     JOIN
       media_types mt ON m.media_type_id = mt.id` as UsersCollection[];
 
-    // Simulate a 2-second delay for demonstration purposes
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
     return result;
   } catch (error) {
     console.error('Error fetching users collection:', error);
