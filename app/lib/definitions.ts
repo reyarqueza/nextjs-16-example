@@ -19,6 +19,12 @@ export type MediaTypes = {
 }
 
 /* various types for the database queries */
+export type MediaItem = {
+  id: number;
+  title: string;
+  media_type: string;
+}
+
 export type UsersCollection = {
   username: string;
   title: string;
