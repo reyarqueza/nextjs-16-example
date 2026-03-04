@@ -1,10 +1,10 @@
-import postgres from 'postgres';
-import { UsersCollection } from '@/app/lib/definitions';
+import postgres from "postgres";
+import { UsersCollection } from "@/app/lib/definitions";
 
 async function allUsersCollection(): Promise<UsersCollection[]> {
   try {
     const sql = postgres(process.env.POSTGRES_URL!, {
-      ssl: 'require',
+      ssl: "require",
     });
 
     const result = await sql`SELECT
@@ -22,8 +22,8 @@ async function allUsersCollection(): Promise<UsersCollection[]> {
 
     return result;
   } catch (error) {
-    console.error('Error fetching users collection:', error);
-    throw new Error('Failed to fetch users collection. Please try again later.');
+    console.error("Error fetching users collection:", error);
+    throw new Error("Failed to fetch users collection. Please try again later.");
   }
 }
 
