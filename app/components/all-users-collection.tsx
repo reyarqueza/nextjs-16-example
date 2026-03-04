@@ -1,12 +1,12 @@
 import postgres from "postgres";
 import { UsersCollection } from "@/app/lib/definitions";
 
+const sql = postgres(process.env.POSTGRES_URL!, {
+  ssl: "require",
+});
+
 async function allUsersCollection(): Promise<UsersCollection[]> {
   try {
-    const sql = postgres(process.env.POSTGRES_URL!, {
-      ssl: "require",
-    });
-
     const result = await sql`SELECT
       u.username,
       m.title,

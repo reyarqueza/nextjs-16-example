@@ -1,6 +1,6 @@
 // File: app/page.tsx
 
-import PageNav from "@/app/page-nav"; 
+import PageNav from "@/app/page-nav";
 import { Suspense } from 'react';
 import AllUsersCollection from '@/app/components/all-users-collection';
 

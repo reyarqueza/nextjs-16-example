@@ -1,12 +1,12 @@
 import postgres from "postgres";
 import { MediaItem } from "@/app/lib/definitions";
 
+const sql = postgres(process.env.POSTGRES_URL!, {
+  ssl: "require",
+});
+
 async function allMedias(): Promise<MediaItem[]> {
   try {
-    const sql = postgres(process.env.POSTGRES_URL!, {
-      ssl: "require",
-    });
-
     const result = await sql`SELECT
       m.id,
       m.title,
