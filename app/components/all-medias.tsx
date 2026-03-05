@@ -24,6 +24,8 @@ async function allMedias(): Promise<MediaItem[]> {
 }
 
 export default async function AllMedias() {
+  "use cache";
+
   try {
     const data = await allMedias();
 
@@ -46,6 +48,6 @@ export default async function AllMedias() {
       </>
     );
   } catch (error) {
-    return <div>Error loading users collection. Please try again later.</div>;
+    return <div>Error loading medias. Please try again later.</div>;
   }
 }

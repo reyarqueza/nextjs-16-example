@@ -1,5 +1,3 @@
-"use cache";
-
 import PageNav from "@/app/page-nav";
 import AllMedias from '@/app/components/all-medias';
 
