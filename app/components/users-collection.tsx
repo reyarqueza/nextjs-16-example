@@ -1,11 +1,11 @@
 import postgres from "postgres";
-import { UsersCollection } from "@/app/lib/definitions";
+import { UsersCollection as UsersCollectionType } from "@/app/lib/definitions";
 
 const sql = postgres(process.env.POSTGRES_URL!, {
   ssl: "require",
 });
 
-async function usersCollection(): Promise<UsersCollection[]> {
+async function usersCollection(): Promise<UsersCollectionType[]> {
   try {
     const result = await sql`SELECT
       u.username,
@@ -18,7 +18,7 @@ async function usersCollection(): Promise<UsersCollection[]> {
     JOIN
       medias m ON m.id = um.media_id
     JOIN
-      media_types mt ON m.media_type_id = mt.id` as UsersCollection[];
+      media_types mt ON m.media_type_id = mt.id` as UsersCollectionType[];
 
     return result;
   } catch (error) {
