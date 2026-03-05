@@ -5,7 +5,7 @@ const sql = postgres(process.env.POSTGRES_URL!, {
   ssl: "require",
 });
 
-async function allMedias(): Promise<MediaItem[]> {
+async function medias(): Promise<MediaItem[]> {
   try {
     const result = await sql`SELECT
       m.id,
@@ -23,11 +23,11 @@ async function allMedias(): Promise<MediaItem[]> {
   }
 }
 
-export default async function AllMedias() {
+export default async function Medias() {
   "use cache";
 
   try {
-    const data = await allMedias();
+    const data = await medias();
 
     return (
       <>

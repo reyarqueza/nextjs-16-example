@@ -5,7 +5,7 @@ const sql = postgres(process.env.POSTGRES_URL!, {
   ssl: "require",
 });
 
-async function allUsersCollection(): Promise<UsersCollection[]> {
+async function usersCollection(): Promise<UsersCollection[]> {
   try {
     const result = await sql`SELECT
       u.username,
@@ -27,9 +27,9 @@ async function allUsersCollection(): Promise<UsersCollection[]> {
   }
 }
 
-export default async function AllUsersCollection() {
+export default async function UsersCollection() {
   try {
-    const data = await allUsersCollection();
+    const data = await usersCollection();
 
     return (
       <>{data.map((item) => (
