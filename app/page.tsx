@@ -8,7 +8,7 @@ import Users from "@/app/components/users";
 export default async function Home() {
   return (
     <div className="flex gap-10">
-      <Users className="h-[50vh] w-48 p-5 border border-gray-200 flex flex-col" />
+      <Users className="h-[50vh] w-48 p-5 border border-gray-300 flex flex-col" />
       <div className="flex-1">
         <PageNav segment="" />
         <h1 className="text-2xl font-bold py-4">Home</h1>

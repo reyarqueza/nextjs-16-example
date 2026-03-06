@@ -1,5 +1,6 @@
 import postgres from "postgres";
 import { UsersCollection as UsersCollectionType } from "@/app/lib/definitions";
+import UserCollectionInput from "@/app/components/user-collection-input";
 
 const sql = postgres(process.env.POSTGRES_URL!, {
   ssl: "require",
@@ -35,22 +36,25 @@ export default async function UsersCollection() {
     const data = await usersCollection();
 
     return (
-      <>{data.map((item) => (
-        <table key={item.username} className="table-auto border w-full">
-          <tbody>
-            <tr>
-              <th className="border border-gray-200 p-2">Username</th>
-              <th className="border border-gray-200 p-2">Title</th>
-              <th className="border border-gray-200 p-2">Media Type</th>
-            </tr>
-            <tr>
-              <td className="border border-gray-200 p-2">{item.username}</td>
-              <td className="border border-gray-200 p-2">{item.title}</td>
-              <td className="border border-gray-200 p-2">{item.media_type}</td>
-            </tr>
-          </tbody>
-        </table>
-      ))}</>
+      <>
+        <UserCollectionInput />
+        {data.map((item) => (
+          <table key={item.username} className="table-auto border w-full">
+            <tbody>
+              <tr>
+                <th className="border border-gray-300 p-2">Username</th>
+                <th className="border border-gray-300 p-2">Title</th>
+                <th className="border border-gray-300 p-2">Media Type</th>
+              </tr>
+              <tr>
+                <td className="border border-gray-300 p-2">{item.username}</td>
+                <td className="border border-gray-300 p-2">{item.title}</td>
+                <td className="border border-gray-300 p-2">{item.media_type}</td>
+              </tr>
+            </tbody>
+          </table>
+        ))}
+      </>
     );
   } catch (error) {
     return <div>Error loading users collection. Please try again later.</div>;

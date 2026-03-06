@@ -34,13 +34,13 @@ export default async function Medias() {
         <table className="table-auto border w-full">
           <tbody>
             <tr>
-              <th className="border border-gray-200 p-2">Title</th>
-              <th className="border border-gray-200 p-2">Media Type</th>
+              <th className="border border-gray-300 p-2">Title</th>
+              <th className="border border-gray-300 p-2">Media Type</th>
             </tr>
             {data.map((item) => (
               <tr key={item.id}>
-                <td className="border border-gray-200 p-2">{item.title}</td>
-                <td className="border border-gray-200 p-2">{item.media_type}</td>
+                <td className="border border-gray-300 p-2">{item.title}</td>
+                <td className="border border-gray-300 p-2">{item.media_type}</td>
               </tr>
             ))}
           </tbody>
