@@ -1,6 +1,5 @@
 import postgres from "postgres";
 import { UsersCollection as UsersCollectionType } from "@/app/lib/definitions";
-import UserCollectionInput from "@/app/components/user-collection-input";
 
 const sql = postgres(process.env.POSTGRES_URL!, {
   ssl: "require",
@@ -37,7 +36,6 @@ export default async function UsersCollection() {
 
     return (
       <>
-        <UserCollectionInput />
         {data.map((item) => (
           <table key={item.username} className="table-auto border w-full">
             <tbody>

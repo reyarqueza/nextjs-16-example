@@ -4,6 +4,7 @@ import PageNav from "@/app/page-nav";
 import { Suspense } from 'react';
 import UsersCollection from '@/app/components/users-collection';
 import Users from "@/app/components/users";
+import UserCollectionInput from "@/app/components/user-collection-input";
 
 export default async function Home() {
   return (
@@ -12,6 +13,7 @@ export default async function Home() {
       <div className="flex-1">
         <PageNav segment="" />
         <h1 className="text-2xl font-bold py-4">Home</h1>
+        <UserCollectionInput />
         <Suspense fallback={<div>Loading...</div>}>
           <UsersCollection />
         </Suspense>
