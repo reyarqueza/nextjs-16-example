@@ -1,6 +1,6 @@
 
 import NewestTitle from "@/app/components/NewestTitle";
-import MediaListing from "@/app/components/MediaListing";
+import MediaListingEditor from "@/app/components/MediaListingEditor";
 import AddMediaItem from "@/app/components/AddMediaItem";
 import type { ManagePageProps } from "@/app/components/AddMediaItem";
 
@@ -10,7 +10,7 @@ export default async function Page({ searchParams }: ManagePageProps) {
       <div className="flex gap-10">
         <div className="flex-2">
           <NewestTitle />
-          <MediaListing isEditor={true} />
+          <MediaListingEditor />
         </div>
         <div className="flex-1">
           <AddMediaItem searchParams={searchParams} />
