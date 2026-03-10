@@ -1,10 +1,10 @@
 
-import FormatListing from "@/app/components/FormatListing";
+import NewestTitle from "@/app/components/NewestTitle";
 import MediaListing from "@/app/components/MediaListing";
 
 export default async function Page() {
   return (<>
-    <FormatListing />
+    <NewestTitle />
     <MediaListing />
   </>
   );

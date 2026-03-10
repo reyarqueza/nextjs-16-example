@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import FormatOptions from "@/app/components/FormatOptions";
 import { redirect } from "next/navigation";
 import postgres from "postgres";
-import FormatListing from "@/app/components/FormatListing";
+import NewestTitle from "@/app/components/NewestTitle";
 import MediaListing from "@/app/components/MediaListing";
 
 function getErrorMessage(error: unknown) {
@@ -54,7 +54,7 @@ export default async function Page({ searchParams }: ManagePageProps) {
   const classBorderColor = error == alreadyInDb ? 'border-blue-700' : 'border-red-700';
 
   return (<>
-    <FormatListing />
+    <NewestTitle />
     <div className="flex gap-10">
       <div className="flex-2">
         <MediaListing />
