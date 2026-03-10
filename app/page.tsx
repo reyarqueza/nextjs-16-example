@@ -1,8 +1,11 @@
-import Image from "next/image";
 
-export default function Page() {
+import FormatListing from "@/app/components/FormatListing";
+import MediaListing from "@/app/components/MediaListing";
+
+export default async function Page() {
   return (<>
-    <h1 className="font-bold text-2xl">Listings</h1>
+    <FormatListing />
+    <MediaListing />
   </>
   );
 }

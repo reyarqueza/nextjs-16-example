@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import FormatOptions from "@/app/components/FormatOptions";
 import { redirect } from "next/navigation";
 import postgres from "postgres";
+import FormatListing from "@/app/components/FormatListing";
+import MediaListing from "@/app/components/MediaListing";
 
 function getErrorMessage(error: unknown) {
   if (error instanceof Error && error.message) {
@@ -52,33 +54,40 @@ export default async function Page({ searchParams }: ManagePageProps) {
   const classBorderColor = error == alreadyInDb ? 'border-blue-700' : 'border-red-700';
 
   return (<>
-    <h1 className="font-bold text-2xl mb-4">Manage Page</h1>
-    {error ? (
-      <p className={`mb-4 rounded border ${classBorderColor} ${classBgColor} p-3 ${classTxtColor}`} role="alert">
-        {error == alreadyInDb ? "That title and format is already in our database, but thanks for your contribution!" : error}
-      </p>
-    ) : null}
-    <form action={addMediaItem}>
-      <fieldset className="border border-gray-300 p-4">
-        <legend className="font-semibold">Add Media Item</legend>
-        <div className="mb-4">
-          <label htmlFor="title" className="block mb-2">Title:</label>
-          <input type="text" id="title" name="title" required className="border border-gray-300 p-2 w-full" />
-        </div>
-        <div className="mb-4">
-          <Suspense fallback={
-            <>
-              <label htmlFor="format">Format:</label>
-              <select className="border border-gray-300 p-2 w-full" id="format" name="format" disabled>
-                <option>Loading formats...</option>
-              </select>
-            </>
-          }>
-            <FormatOptions />
-          </Suspense>
-        </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Add Media Item</button>
-      </fieldset>
-    </form>
+    <FormatListing />
+    <div className="flex gap-10">
+      <div className="flex-2">
+        <MediaListing />
+      </div>
+      <div className="flex-1">
+        {error ? (
+          <p className={`mb-4 rounded border ${classBorderColor} ${classBgColor} p-3 ${classTxtColor}`} role="alert">
+            {error == alreadyInDb ? "That title and format is already in our database, but thanks for your contribution!" : error}
+          </p>
+        ) : null}
+        <form action={addMediaItem}>
+          <fieldset className="border border-gray-300 p-4">
+            <legend className="font-semibold px-2">Add Media Item</legend>
+            <div className="mb-4">
+              <label htmlFor="title" className="block mb-2">Title:</label>
+              <input type="text" id="title" name="title" required className="border border-gray-300 p-2 w-full" />
+            </div>
+            <div className="mb-4">
+              <Suspense fallback={
+                <>
+                  <label htmlFor="format">Format:</label>
+                  <select className="border border-gray-300 p-2 w-full" id="format" name="format" disabled>
+                    <option>Loading formats...</option>
+                  </select>
+                </>
+              }>
+                <FormatOptions />
+              </Suspense>
+            </div>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Add Media Item</button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
   </>)
 }
