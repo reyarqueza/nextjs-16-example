@@ -10,7 +10,7 @@ export default async function Page({ searchParams }: ManagePageProps) {
       <div className="flex gap-10">
         <div className="flex-2">
           <NewestTitle />
-          <MediaListing />
+          <MediaListing isEditor={true} />
         </div>
         <div className="flex-1">
           <AddMediaItem searchParams={searchParams} />
