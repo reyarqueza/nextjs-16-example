@@ -1,6 +1,6 @@
 
 import NewestTitle from "@/app/components/NewestTitle";
-import MediaListingEditor from "@/app/components/MediaListingEditor";
+import MediaListingEditor from "@/app/components/MediaListingEditorWrapper";
 import AddMediaItem from "@/app/components/AddMediaItem";
 import type { ManagePageProps } from "@/app/components/AddMediaItem";
 
