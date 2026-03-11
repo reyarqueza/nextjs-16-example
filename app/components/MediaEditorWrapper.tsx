@@ -1,5 +1,5 @@
 import {Suspense} from "react";
-import MediaListingEditor from "@/app/components/MediaListingEditor";
+import MediaEditor from "@/app/components/MediaEditor";
 import MediaListingWrapper from "@/app/components/MediaListingWrapper";
 import postgres from "postgres";
 
@@ -27,7 +27,7 @@ async function getListings() {
   `;
 }
 
-export default function MediaListingEditorWrapper() {
+export default function MediaEditorWrapper() {
   const listings = getListings();
 
   return (
@@ -39,9 +39,7 @@ export default function MediaListingEditorWrapper() {
       </>)}
     >
       <Suspense fallback={<tr><td className="text-lg p-2" colSpan={3}>Streaming...</td></tr>}>
-        <MediaListingEditor
-          listings={listings}
-        />
+        <MediaEditor listings={listings} />
       </Suspense>
     </MediaListingWrapper>
   );

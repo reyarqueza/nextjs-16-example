@@ -3,7 +3,7 @@
 import { Row, RowList } from "postgres";
 import { use } from "react";
 
-export default function MediaTableBody({
+export default function MediaEditor({
   listings,
 }: {
   listings: Promise<RowList<Row[]>>;
