@@ -1,35 +1,17 @@
-import postgres from "postgres";
+"use client";
 
-async function getListings() {
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
+import { Row, RowList } from "postgres";
+import { use } from "react";
 
-  // Add 1.5-second delay here to simulate slow query
-  await new Promise(resolve => setTimeout(resolve, 1500));
-
-  return await sql`
-    SELECT 
-      media_items.id, media_items.title, formats.name
-    AS
-      format
-    FROM
-      media_items
-    JOIN
-      formats
-    ON
-      media_items.format_id = formats.id
-    ORDER BY
-      media_items.created_at DESC
-  `;
-}
-
-export default async function MediaTableBody() {
-  const listings = await getListings();
-
+export default function MediaTableBody({
+  listings,
+}: {
+  listings: Promise<RowList<Row[]>>;
+}) {
+  const allListings = use(listings);
   return (
     <>
-      {listings.map((listing) => (
+      {allListings.map((listing) => (
         <tr key={listing.id}>
           <td className="border border-gray-300 p-2">{listing.title}</td>
           <td className="border border-gray-300 p-2">{listing.format}</td>

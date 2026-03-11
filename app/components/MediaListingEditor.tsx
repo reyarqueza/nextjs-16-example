@@ -1,7 +1,33 @@
 import {Suspense} from "react";
 import MediaTableBody from "@/app/components/MediaTableBody";
+import postgres from "postgres";
 
-export default async function MediaListing() {
+async function getListings() {
+  const sql = postgres(process.env.POSTGRES_URL!, {
+    ssl: "require",
+  });
+
+  // Add 1.5-second delay here to simulate slow query
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  return sql`
+    SELECT 
+      media_items.id, media_items.title, formats.name
+    AS
+      format
+    FROM
+      media_items
+    JOIN
+      formats
+    ON
+      media_items.format_id = formats.id
+    ORDER BY
+      media_items.created_at DESC
+  `;
+}
+
+export default function MediaListing() {
+  const listings = getListings();
   return (
     <>
       <h1 className="font-bold text-2xl mb-4">Listings</h1>
@@ -15,7 +41,7 @@ export default async function MediaListing() {
         </thead>
         <tbody>
           <Suspense fallback={<tr><td className="text-lg p-2" colSpan={3}>Streaming...</td></tr>}>
-            <MediaTableBody />
+            <MediaTableBody listings={listings} />
           </Suspense>
         </tbody>
     </table>
