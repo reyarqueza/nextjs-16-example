@@ -53,7 +53,11 @@ export default function MediaForm({
     <>
       <div className="p-2 flex items-center">
         <input type="hidden" name="id" value={listing.id} />
+        <label htmlFor="title" className="sr-only block text-sm font-medium text-gray-700 mr-2">
+          Title:
+        </label>
         <input
+          id="title"
           name="title"
           className="border border-gray-300 p-2 w-full bg-white"
           value={listingTitle}
@@ -61,7 +65,11 @@ export default function MediaForm({
         />
       </div>
       <div className="p-2 flex items-center">
+        <label htmlFor="formatId" className="sr-only block text-sm font-medium text-gray-700 mr-2">
+          Format:
+        </label>
         <select
+          id="formatId"
           name="formatId"
           value={listingFormatId}
           className="border border-gray-300 p-2 w-full bg-white"
