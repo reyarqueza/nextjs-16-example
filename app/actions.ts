@@ -1,8 +1,24 @@
 "use server";
 
 import postgres from "postgres";
-import { revalidatePath, refresh  } from "next/cache";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+
+function requireFormString(formData: FormData, key: string) {
+  const value = formData.get(key);
+  if (typeof value !== "string") {
+    throw new Error(`Expected form field "${key}" to be a string.`);
+  }
+  return value;
+}
+
+function requireFormInt(formData: FormData, key: string) {
+  const raw = requireFormString(formData, key);
+  const value = Number.parseInt(raw, 10);
+  if (!Number.isFinite(value)) {
+    throw new Error(`Expected form field "${key}" to be an integer.`);
+  }
+  return value;
+}
 
 async function updateListing(formData: FormData) {
   const sql = postgres(process.env.POSTGRES_URL!, {
@@ -10,11 +26,11 @@ async function updateListing(formData: FormData) {
   });
 
   try {
-    const id = formData.get("id");
-    const title = formData.get("title");
-    const formatId = formData.get("formatId");
+    const id = requireFormInt(formData, "id");
+    const title = requireFormString(formData, "title");
+    const formatId = requireFormInt(formData, "formatId");
 
-    const result = await sql`
+    await sql`
       UPDATE media_items
       SET title = ${title}, format_id = ${formatId}
       WHERE id = ${id}
@@ -31,7 +47,7 @@ async function deleteListing(formData: FormData) {
     ssl: "require",
   });
 
-  const id = formData.get("id");
+  const id = requireFormInt(formData, "id");
 
   await sql`
     DELETE FROM media_items
