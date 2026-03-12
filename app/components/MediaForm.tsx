@@ -8,13 +8,17 @@ export default function MediaForm({
   listing: Row;
   allFormats: RowList<Row[]>;
 }) {
-  const [listingTitle, setListingTitle] = useState(listing.title);
-  const [listingFormatId, setListingFormatId] = useState(listing.format_id);
+  const [listingTitle, setListingTitle] = useState(() => String(listing.title ?? ""));
+  const [listingFormatId, setListingFormatId] = useState(() =>
+    listing.format_id == null ? "" : String(listing.format_id)
+  );
 
   return (
     <>
       <div className="p-2 flex items-center">
+        <input type="hidden" name="id" value={listing.id} />
         <input
+          name="title"
           className="border border-gray-300 p-2 w-full bg-white"
           value={listingTitle}
           onChange={(e) => setListingTitle(e.target.value)}
@@ -22,23 +26,26 @@ export default function MediaForm({
       </div>
       <div className="p-2 flex items-center">
         <select
+          name="formatId"
           value={listingFormatId}
           className="border border-gray-300 p-2 w-full bg-white"
           onChange={(e) => setListingFormatId(e.target.value)}
         >
-          <option value="" disabled>Select a format</option>
+          <option value="" disabled>
+            Select a format
+          </option>
           {allFormats.map((format) => (
-            <option key={format.id} value={format.id}>
+            <option key={format.id} value={String(format.id)}>
               {format.name}
             </option>
           ))}
         </select>
       </div>
       <div className="p-2 flex gap-6 justify-center">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white w-full rounded">
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white w-full rounded">
           Save
         </button>
-        <button className="bg-red-500 hover:bg-red-700 text-white w-full rounded">
+        <button type="submit" className="bg-red-500 hover:bg-red-700 text-white w-full rounded">
           Delete
         </button>
       </div>

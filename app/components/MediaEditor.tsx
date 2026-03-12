@@ -1,8 +1,9 @@
 "use client";
 
 import { Row, RowList } from "postgres";
-import { use } from "react";
+import { use, useActionState, startTransition } from "react";
 import MediaForm from "@/app/components/MediaForm";
+import { updateListing, deleteListing } from "@/app/actions";
 
 export default function MediaEditor({
   listings,
@@ -17,7 +18,14 @@ export default function MediaEditor({
   return (
     <>
       {allListings.map((listing, index) => (
-        <form className={`border border-gray-200 grid grid-cols-3 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`} key={listing.id}>
+        <form
+          action={updateListing}
+          className={`border border-gray-200 grid grid-cols-3 ${index % 2 === 0 
+            ? 'bg-gray-100' 
+            : 'bg-white'
+          }`}
+          key={`${String(listing.id)}-${String(listing.format_id ?? "")}-${String(listing.title ?? "")}`}
+        >
           <MediaForm listing={listing} allFormats={allFormats} />
         </form>
       ))}
