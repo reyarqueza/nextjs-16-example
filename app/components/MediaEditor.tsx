@@ -36,7 +36,7 @@ export default function MediaEditor({
             action={deleteListing}
             className="flex"
           >
-            <MediaFormDelete listing={listing} allFormats={allFormats} />
+            <MediaFormDelete listing={listing} />
           </form>
         </div>
       ))}
