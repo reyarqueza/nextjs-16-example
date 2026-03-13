@@ -1,25 +1,20 @@
 "use client";
 
-import type { Row, RowList } from "postgres";
-import { useState } from "react";
+import type { Row } from "postgres";
 import { useFormStatus } from "react-dom";
 
 export default function MediaFormDelete({
   listing,
-  allFormats,
 }: {
   listing: Row;
-  allFormats: RowList<Row[]>;
 }) {
-  const [listingTitle, setListingTitle] = useState(() => String(listing.title ?? ""));
-  const [listingFormatId, setListingFormatId] = useState(() =>
-    listing.format_id == null ? "" : String(listing.format_id)
-  );
+
   const { pending } = useFormStatus();
 
   return (
     <>
       <div className="p-2 flex justify-center">
+        <input type="hidden" name="id" value={listing.id} />
         <button
           type="submit"
           disabled={pending}

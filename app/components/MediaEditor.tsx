@@ -28,7 +28,7 @@ export default function MediaEditor({
         >
           <form
             action={updateListing}
-            className="flex w-full"
+            className="flex w-full justify-around"
           >
             <MediaFormSave listing={listing} allFormats={allFormats} />
           </form>
