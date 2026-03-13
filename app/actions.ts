@@ -42,6 +42,7 @@ async function updateListing(formData: FormData) {
     console.error("Error updating listing:", error);
   }
 
+  revalidatePath("/");
   redirect("/manage");
 }
 
@@ -57,6 +58,7 @@ async function deleteListing(formData: FormData) {
     WHERE id = ${id}
   `;
 
+  revalidatePath("/");
   revalidatePath("/manage");
 }
 
