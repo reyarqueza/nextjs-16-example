@@ -2,6 +2,7 @@
 
 import postgres from "postgres";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 function requireFormString(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -40,6 +41,8 @@ async function updateListing(formData: FormData) {
   } catch (error) {
     console.error("Error updating listing:", error);
   }
+
+  redirect("/manage");
 }
 
 async function deleteListing(formData: FormData) {
