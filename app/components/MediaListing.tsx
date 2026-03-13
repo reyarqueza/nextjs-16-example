@@ -1,5 +1,4 @@
 import postgres from "postgres";
-import MediaListingWrapper from "@/app/components/MediaListingWrapper";
 
 async function getListings() {
   const sql = postgres(process.env.POSTGRES_URL!, {
@@ -18,18 +17,21 @@ export default async function MediaListing() {
   const listings = await getListings();
 
   return (
-    <MediaListingWrapper
-      tableHeader={(<>
-        <th className="border border-gray-300 p-2">Title</th>
-        <th className="border border-gray-300 p-2">Format</th>
-      </>)}
-    >
+    <table className="border-collapse border border-gray-300 w-full">
+      <thead>
+        <tr>
+          <th className="border border-gray-300 p-2">Title</th>
+          <th className="border border-gray-300 p-2">Format</th>
+        </tr>
+      </thead>
+      <tbody>
       {listings.map((listing) => (
         <tr key={listing.id}>
           <td className="border border-gray-300 p-2">{listing.title}</td>
           <td className="border border-gray-300 p-2">{listing.format}</td>
         </tr>
       ))}
-    </MediaListingWrapper>
+      </tbody>
+    </table>
   );
 }

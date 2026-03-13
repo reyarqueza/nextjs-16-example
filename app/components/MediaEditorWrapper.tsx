@@ -1,6 +1,5 @@
 import {Suspense} from "react";
 import MediaEditor from "@/app/components/MediaEditor";
-import MediaListingWrapper from "@/app/components/MediaListingWrapper";
 import postgres from "postgres";
 
 async function getListings() {
@@ -12,9 +11,9 @@ async function getListings() {
   await new Promise(resolve => setTimeout(resolve, 1500));
 
   return sql`
-    SELECT 
-      media_items.id, media_items.title, 
-      formats.id AS format_id, 
+    SELECT
+      media_items.id, media_items.title,
+      formats.id AS format_id,
       formats.name AS format_name
     FROM
       media_items
@@ -47,18 +46,11 @@ export default function MediaEditorWrapper() {
   const formats = getFormats();
 
   return (
-    <MediaListingWrapper
-      headerText="Edit Listing"
-      isGrid={true}
-      tableHeader={(<>
-        <div className="border border-gray-300 p-2 text-center font-bold">Title</div>
-        <div className="border border-gray-300 p-2 text-center font-bold">Format</div>
-        <div className="border border-gray-300 p-2 text-center font-bold">Actions</div>
-      </>)}
-    >
+    <div>
+      <h1 className="font-bold text-2xl mb-4">Edit Listing</h1>
       <Suspense fallback={<div className="text-lg p-2 col-span-3">Streaming...</div>}>
         <MediaEditor listings={listings} formats={formats} />
       </Suspense>
-    </MediaListingWrapper>
+    </div>
   );
 }

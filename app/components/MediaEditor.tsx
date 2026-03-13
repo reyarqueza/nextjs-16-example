@@ -1,8 +1,9 @@
 "use client";
 
 import { Row, RowList } from "postgres";
-import { use, useActionState, startTransition } from "react";
-import MediaForm from "@/app/components/MediaForm";
+import { use } from "react";
+import MediaFormSave from "@/app/components/MediaFormSave";
+import MediaFormDelete from "@/app/components/MediaFormDelete";
 import { updateListing, deleteListing } from "@/app/actions";
 
 export default function MediaEditor({
@@ -18,16 +19,26 @@ export default function MediaEditor({
   return (
     <>
       {allListings.map((listing, index) => (
-        <form
-          action={updateListing}
-          className={`border border-gray-200 grid grid-cols-3 ${index % 2 === 0 
-            ? 'bg-gray-100' 
+        <div
+          key={listing.id}
+          className={`border border-gray-200 flex ${index % 2 === 0
+            ? 'bg-gray-100'
             : 'bg-white'
           }`}
-          key={`${String(listing.id)}-${String(listing.format_id ?? "")}-${String(listing.title ?? "")}`}
         >
-          <MediaForm listing={listing} allFormats={allFormats} />
-        </form>
+          <form
+            action={updateListing}
+            className="flex w-full"
+          >
+            <MediaFormSave listing={listing} allFormats={allFormats} />
+          </form>
+          <form
+            action={deleteListing}
+            className="flex"
+          >
+            <MediaFormDelete listing={listing} allFormats={allFormats} />
+          </form>
+        </div>
       ))}
     </>
   );
