@@ -57,7 +57,7 @@ export default function MediaFormSave({
         <button
           type="submit"
           disabled={pending}
-          className="bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300 text-white rounded px-3"
+          className="bg-blue-500 hover:bg-blue-700 disabled:bg-blue-300 text-white rounded px-3 w-[95px]"
         >
           {pending ? (
             <span className="inline-flex items-center justify-center gap-2">
@@ -65,7 +65,6 @@ export default function MediaFormSave({
                 aria-hidden
                 className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
               />
-              Saving...
             </span>
           ) : (
             "Save"

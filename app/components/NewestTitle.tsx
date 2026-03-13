@@ -6,8 +6,8 @@ async function getNewestTitle() {
     ssl: "require",
   });
 
-  // Add 1.5-second delay here to simulate slow query
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  // // Add 1.5-second delay here to simulate slow query
+  // await new Promise(resolve => setTimeout(resolve, 1500));
 
   return await sql`
     SELECT
