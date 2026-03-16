@@ -1,7 +1,11 @@
 import postgres from "postgres";
 import {Suspense} from "react";
+import { cacheTag } from 'next/cache'
 
 async function getNewestTitle() {
+  "use cache";
+  cacheTag("listings");
+
   const sql = postgres(process.env.POSTGRES_URL!, {
     ssl: "require",
   });

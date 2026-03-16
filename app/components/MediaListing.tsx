@@ -1,6 +1,9 @@
 import postgres from "postgres";
+import { cacheTag } from 'next/cache'
+async function getHomeListings() {
+  "use cache";
+  cacheTag("listings");
 
-async function getListings() {
   const sql = postgres(process.env.POSTGRES_URL!, {
     ssl: "require",
   });
@@ -14,7 +17,7 @@ async function getListings() {
 }
 
 export default async function MediaListing() {
-  const listings = await getListings();
+  const listings = await getHomeListings();
 
   return (
     <table className="border-collapse border border-gray-300 w-full">

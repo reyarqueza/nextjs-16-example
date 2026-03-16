@@ -46,6 +46,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: serverActionAllowedOrigins(),
     },
   },
+  cacheComponents: true,
 };
 
 export default nextConfig;

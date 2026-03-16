@@ -3,6 +3,8 @@ import MediaEditor from "@/app/components/MediaEditor";
 import postgres from "postgres";
 
 async function getListings() {
+  "use cache";
+
   const sql = postgres(process.env.POSTGRES_URL!, {
     ssl: "require",
   });
@@ -27,6 +29,8 @@ async function getListings() {
 }
 
 async function getFormats() {
+  "use cache";
+
   const sql = postgres(process.env.POSTGRES_URL!, {
     ssl: "require",
   });
