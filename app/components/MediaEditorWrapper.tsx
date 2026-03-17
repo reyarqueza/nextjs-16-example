@@ -1,9 +1,11 @@
 import {Suspense} from "react";
 import MediaEditor from "@/app/components/MediaEditor";
 import postgres from "postgres";
+import { cacheTag } from "next/cache";
 
 async function getListings() {
   "use cache";
+  cacheTag("listings");
 
   const sql = postgres(process.env.POSTGRES_URL!, {
     ssl: "require",
@@ -30,6 +32,7 @@ async function getListings() {
 
 async function getFormats() {
   "use cache";
+  cacheTag("listings");
 
   const sql = postgres(process.env.POSTGRES_URL!, {
     ssl: "require",

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import postgres from "postgres";
 import FormatOptions from "@/app/components/FormatOptions";
+import { updateTag } from "next/cache";
 
 export type ManagePageProps = {
   searchParams: Promise<{
@@ -41,6 +42,7 @@ async function addMediaItem(formData: FormData) {
     redirect(`/manage?error=${encodeURIComponent(getErrorMessage(error))}`);
   }
 
+  updateTag("listings");
   redirect("/manage");
 }
 
