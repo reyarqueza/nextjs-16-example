@@ -4,12 +4,15 @@ import FormatOptions from "@/app/components/FormatOptions";
 import AddMediaItemSubmit from "@/app/components/AddMediaItemSubmit";
 import { updateTag } from "next/cache";
 import { sql } from "@/app/lib/db";
+import { Filter } from "bad-words";
 
 export type ManagePageProps = {
   searchParams: Promise<{
     error?: string;
   }>;
 };
+
+const profanityFilter = new Filter();
 
 const URL_SCHEME_REGEX = /\b[a-z][a-z0-9+.-]{1,15}:\/\/\S+/i;
 const WWW_REGEX = /\bwww\.\S+/i;
@@ -25,6 +28,12 @@ function normalizeSingleLine(value: string) {
 function assertNoUrlLike(value: string) {
   if (URL_SCHEME_REGEX.test(value) || WWW_REGEX.test(value) || DOMAIN_REGEX.test(value)) {
     throw new Error("Please remove URLs from the title.");
+  }
+}
+
+function assertNoProfanity(value: string) {
+  if (profanityFilter.isProfane(value)) {
+    throw new Error("Please remove profanity from the title.");
   }
 }
 
@@ -74,6 +83,7 @@ async function addMediaItem(formData: FormData) {
     }
 
     assertNoUrlLike(rawTitle);
+    assertNoProfanity(title);
     assertNoAsciiArtLike(rawTitle, title);
 
     await sql`
