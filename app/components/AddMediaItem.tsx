@@ -11,6 +11,38 @@ export type ManagePageProps = {
   }>;
 };
 
+const URL_SCHEME_REGEX = /\b[a-z][a-z0-9+.-]{1,15}:\/\/\S+/i;
+const WWW_REGEX = /\bwww\.\S+/i;
+const DOMAIN_REGEX =
+  /\b(?:[a-z0-9-]{1,63}\.)+(?:com|net|org|io|co|edu|gov|me|app|dev|gg|tv|fm|biz|info|xyz|site|store|shop|online|us|uk|ca|au|de|fr|jp|cn|ru)\b/i;
+const BOX_DRAWING_OR_BRAILLE_REGEX = /[\u2500-\u257F\u2580-\u259F\u2800-\u28FF]/;
+const REPEATED_SYMBOL_REGEX = /([^\p{L}\p{N}\s])\1{5,}/u;
+
+function normalizeSingleLine(value: string) {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function assertNoUrlLike(value: string) {
+  if (URL_SCHEME_REGEX.test(value) || WWW_REGEX.test(value) || DOMAIN_REGEX.test(value)) {
+    throw new Error("Please remove URLs from the title.");
+  }
+}
+
+function assertNoAsciiArtLike(rawValue: string, normalizedValue: string) {
+  if (BOX_DRAWING_OR_BRAILLE_REGEX.test(rawValue) || REPEATED_SYMBOL_REGEX.test(rawValue)) {
+    throw new Error("Please remove ASCII art from the title.");
+  }
+
+  const compact = normalizedValue.replace(/\s/g, "");
+  if (compact.length >= 20) {
+    const lettersAndNumbers = compact.match(/[\p{L}\p{N}]/gu)?.length ?? 0;
+    const ratio = lettersAndNumbers / compact.length;
+    if (ratio < 0.4) {
+      throw new Error("Please remove ASCII art from the title.");
+    }
+  }
+}
+
 function getErrorMessage(error: unknown) {
   if (error instanceof Error && error.message) {
     return error.message;
@@ -22,14 +54,28 @@ function getErrorMessage(error: unknown) {
 async function addMediaItem(formData: FormData) {
   "use server";
 
-  const title = formData.get("title") as string | null;
-  const formatId = formData.get("format") as string | null;
+  const rawTitle = formData.get("title");
+  const rawFormatId = formData.get("format");
 
-  if (!title || !formatId) {
+  if (typeof rawTitle !== "string" || typeof rawFormatId !== "string") {
     redirect("/manage?error=Title%20and%20format%20are%20required");
   }
 
   try {
+    const title = normalizeSingleLine(rawTitle);
+    const formatId = Number.parseInt(rawFormatId, 10);
+
+    if (!title || !Number.isFinite(formatId)) {
+      redirect("/manage?error=Title%20and%20format%20are%20required");
+    }
+
+    if (title.length > 200) {
+      throw new Error("Title must be 200 characters or fewer.");
+    }
+
+    assertNoUrlLike(rawTitle);
+    assertNoAsciiArtLike(rawTitle, title);
+
     await sql`
       INSERT INTO media_items (title, format_id)
       VALUES (${title}, ${formatId})
