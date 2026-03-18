@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import postgres from "postgres";
 import FormatOptions from "@/app/components/FormatOptions";
+import AddMediaItemSubmit from "@/app/components/AddMediaItemSubmit";
 import { updateTag } from "next/cache";
 
 export type ManagePageProps = {
@@ -79,7 +80,7 @@ export default async function AddMediaItem({ searchParams }: ManagePageProps) {
               <FormatOptions />
             </Suspense>
           </div>
-          <button type="submit" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Add Media Item</button>
+          <AddMediaItemSubmit />
         </fieldset>
       </form>
     </>

@@ -17,36 +17,42 @@ function getErrorMessage(error: unknown) {
 }
 
 export default async function FormatOptions() {
-  try {
-    const formats = await getFormats();
+  let formats: Awaited<ReturnType<typeof getFormats>> | null = null;
+  let errorMessage: string | null = null;
 
-    return (<>
+  try {
+    formats = await getFormats();
+  } catch (error) {
+    errorMessage = getErrorMessage(error);
+  }
+
+  if (!formats) {
+    return (
+      <>
+        <label htmlFor="format">Format:</label>
+        <select className="border border-gray-300 p-2 w-full" id="format" name="format" disabled>
+          <option>Unable to load formats</option>
+        </select>
+        {errorMessage ? (
+          <p className="mt-2 text-sm text-red-700" role="alert">
+            {errorMessage}
+          </p>
+        ) : null}
+      </>
+    );
+  }
+
+  return (
+    <>
       <label htmlFor="format">Format:</label>
       <select className="border border-gray-300 p-2 w-full" id="format" name="format" required>
         <option value="">Select a format</option>
         {formats.map((format) => (
-        <option key={format.id} value={format.id}>
-          {format.name}
-        </option>
+          <option key={format.id} value={format.id}>
+            {format.name}
+          </option>
         ))}
       </select>
-    </>);
-  } catch (error) {
-    return (
-      <>
-        <label htmlFor="format">Format:</label>
-        <select
-          className="border border-gray-300 p-2 w-full"
-          id="format"
-          name="format"
-          disabled
-        >
-          <option>Unable to load formats</option>
-        </select>
-        <p className="mt-2 text-sm text-red-700" role="alert">
-          {getErrorMessage(error)}
-        </p>
-      </>
-    );
-  }
+    </>
+  );
 }
