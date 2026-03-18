@@ -20,6 +20,11 @@ const DOMAIN_REGEX =
   /\b(?:[a-z0-9-]{1,63}\.)+(?:com|net|org|io|co|edu|gov|me|app|dev|gg|tv|fm|biz|info|xyz|site|store|shop|online|us|uk|ca|au|de|fr|jp|cn|ru)\b/i;
 const BOX_DRAWING_OR_BRAILLE_REGEX = /[\u2500-\u257F\u2580-\u259F\u2800-\u28FF]/;
 const REPEATED_SYMBOL_REGEX = /([^\p{L}\p{N}\s])\1{5,}/u;
+const INVISIBLE_CHAR_REGEX = /[\u200B-\u200D\uFEFF\u2060]/g;
+
+function sanitizeUserTextInput(value: string) {
+  return value.normalize("NFKC").replace(INVISIBLE_CHAR_REGEX, "");
+}
 
 function normalizeSingleLine(value: string) {
   return value.replace(/\s+/g, " ").trim();
@@ -71,7 +76,8 @@ async function addMediaItem(formData: FormData) {
   }
 
   try {
-    const title = normalizeSingleLine(rawTitle);
+    const cleanedRawTitle = sanitizeUserTextInput(rawTitle);
+    const title = normalizeSingleLine(cleanedRawTitle);
     const formatId = Number.parseInt(rawFormatId, 10);
 
     if (!title || !Number.isFinite(formatId)) {
@@ -82,9 +88,9 @@ async function addMediaItem(formData: FormData) {
       throw new Error("Title must be 200 characters or fewer.");
     }
 
-    assertNoUrlLike(rawTitle);
+    assertNoUrlLike(cleanedRawTitle);
     assertNoProfanity(title);
-    assertNoAsciiArtLike(rawTitle, title);
+    assertNoAsciiArtLike(cleanedRawTitle, title);
 
     await sql`
       INSERT INTO media_items (title, format_id)
