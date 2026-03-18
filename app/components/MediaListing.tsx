@@ -1,12 +1,8 @@
-import postgres from "postgres";
 import { cacheTag } from 'next/cache'
+import { sql } from "@/app/lib/db";
 async function getHomeListings() {
   "use cache";
   cacheTag("listings");
-
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
 
   return await sql`
     SELECT media_items.id, media_items.title, formats.name AS format

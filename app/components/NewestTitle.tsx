@@ -1,14 +1,10 @@
-import postgres from "postgres";
 import {Suspense} from "react";
 import { cacheTag } from 'next/cache'
+import { sql } from "@/app/lib/db";
 
 async function getNewestTitle() {
   "use cache";
   cacheTag("listings");
-
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
 
   // // Add 1.5-second delay here to simulate slow query
   // await new Promise(resolve => setTimeout(resolve, 1500));

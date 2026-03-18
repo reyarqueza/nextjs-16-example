@@ -1,10 +1,6 @@
-import postgres from "postgres";
+import { sql } from "@/app/lib/db";
 
 async function getFormats() {
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
-
   return await sql`SELECT id, name FROM formats ORDER BY name`;
 }
 

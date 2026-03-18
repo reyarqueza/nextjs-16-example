@@ -1,15 +1,11 @@
 import {Suspense} from "react";
 import MediaEditor from "@/app/components/MediaEditor";
-import postgres from "postgres";
 import { cacheTag } from "next/cache";
+import { sql } from "@/app/lib/db";
 
 async function getListings() {
   "use cache";
   cacheTag("listings");
-
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
 
   // // Add 1.5-second delay here to simulate slow query
   // await new Promise(resolve => setTimeout(resolve, 1500));
@@ -33,10 +29,6 @@ async function getListings() {
 async function getFormats() {
   "use cache";
   cacheTag("listings");
-
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
 
   return sql`
     SELECT

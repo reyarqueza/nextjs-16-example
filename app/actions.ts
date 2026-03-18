@@ -1,9 +1,9 @@
 "use server";
 
-import postgres from "postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { updateTag } from "next/cache"
+import { sql } from "@/app/lib/db";
 
 function requireFormString(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -23,10 +23,6 @@ function requireFormInt(formData: FormData, key: string) {
 }
 
 async function updateListing(formData: FormData) {
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
-
   try {
     const id = requireFormInt(formData, "id");
     const title = requireFormString(formData, "title");
@@ -49,10 +45,6 @@ async function updateListing(formData: FormData) {
 }
 
 async function deleteListing(formData: FormData) {
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
-
   const id = requireFormInt(formData, "id");
 
   await sql`

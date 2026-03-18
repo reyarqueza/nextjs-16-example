@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import postgres from "postgres";
 import FormatOptions from "@/app/components/FormatOptions";
 import AddMediaItemSubmit from "@/app/components/AddMediaItemSubmit";
 import { updateTag } from "next/cache";
+import { sql } from "@/app/lib/db";
 
 export type ManagePageProps = {
   searchParams: Promise<{
@@ -21,10 +21,6 @@ function getErrorMessage(error: unknown) {
 
 async function addMediaItem(formData: FormData) {
   "use server";
-
-  const sql = postgres(process.env.POSTGRES_URL!, {
-    ssl: "require",
-  });
 
   const title = formData.get("title") as string | null;
   const formatId = formData.get("format") as string | null;
