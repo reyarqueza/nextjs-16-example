@@ -1,4 +1,4 @@
-# Gemini Project Guide: Next.js 16 Example
+# Project Guide: Next.js 16 Example
 
 This file serves as the foundational mandate for all AI interactions within this project. Adhere to these standards rigorously.
 
@@ -47,5 +47,4 @@ A modern media management application built with Next.js 16, React 19, and Postg
 
 ### Best Practices
 - **Type Safety:** Maintain strict TypeScript typing across the codebase.
-- **Performance:** Optimize for Core Web Vitals. Use `next/image` and `next/font` where applicable.
 - **Clean Code:** Prioritize readability. Consolidate logic into clean abstractions rather than threading state across unrelated layers.
