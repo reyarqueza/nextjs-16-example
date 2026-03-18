@@ -61,3 +61,17 @@ pnpm install
 ```bash
 pnpm run dev
 ```
+
+## Screenshots
+This example uses App Router, React Server Components, Server Actions, Streaming with Suspense, and Cache Components
+to build an online media collection of various formats from Utra HD Blu-ray down to VHS:
+
+### Homepage
+![Homepage screenshot](./home.png)
+
+### Manage
+![Manage screenshot](./manage.png)
+
+## Demo
+You can try it out on Vercel at:
+https://nextjs-16-example.vercel.app/
