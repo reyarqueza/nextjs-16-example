@@ -2,8 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { updateTag } from "next/cache"
+import { updateTag } from "next/cache";
 import { sql } from "@/app/lib/db";
+import { sanitizeAndValidateTitle } from "@/app/lib/sanitize";
 
 function requireFormString(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -22,10 +23,19 @@ function requireFormInt(formData: FormData, key: string) {
   return value;
 }
 
+function getErrorMessage(error: unknown) {
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return "Unable to save changes.";
+}
+
 async function updateListing(formData: FormData) {
   try {
     const id = requireFormInt(formData, "id");
-    const title = requireFormString(formData, "title");
+    const titleInput = requireFormString(formData, "title");
+    const title = sanitizeAndValidateTitle(titleInput);
     const formatId = requireFormInt(formData, "formatId");
 
     await sql`
@@ -37,6 +47,10 @@ async function updateListing(formData: FormData) {
     revalidatePath("/manage");
   } catch (error) {
     console.error("Error updating listing:", error);
+    updateTag("listings");
+    revalidatePath("/");
+    revalidatePath("/manage");
+    redirect(`/manage?error=${encodeURIComponent(getErrorMessage(error))}`);
   }
 
   updateTag("listings");

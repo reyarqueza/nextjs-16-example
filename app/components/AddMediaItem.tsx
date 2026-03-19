@@ -4,58 +4,13 @@ import FormatOptions from "@/app/components/FormatOptions";
 import AddMediaItemSubmit from "@/app/components/AddMediaItemSubmit";
 import { updateTag } from "next/cache";
 import { sql } from "@/app/lib/db";
-import { Filter } from "bad-words";
+import { sanitizeAndValidateTitle } from "@/app/lib/sanitize";
 
 export type ManagePageProps = {
   searchParams: Promise<{
     error?: string;
   }>;
 };
-
-const profanityFilter = new Filter();
-
-const URL_SCHEME_REGEX = /\b[a-z][a-z0-9+.-]{1,15}:\/\/\S+/i;
-const WWW_REGEX = /\bwww\.\S+/i;
-const DOMAIN_REGEX =
-  /\b(?:[a-z0-9-]{1,63}\.)+(?:com|net|org|io|co|edu|gov|me|app|dev|gg|tv|fm|biz|info|xyz|site|store|shop|online|us|uk|ca|au|de|fr|jp|cn|ru)\b/i;
-const BOX_DRAWING_OR_BRAILLE_REGEX = /[\u2500-\u257F\u2580-\u259F\u2800-\u28FF]/;
-const REPEATED_SYMBOL_REGEX = /([^\p{L}\p{N}\s])\1{5,}/u;
-const INVISIBLE_CHAR_REGEX = /[\u200B-\u200D\uFEFF\u2060]/g;
-
-function sanitizeUserTextInput(value: string) {
-  return value.normalize("NFKC").replace(INVISIBLE_CHAR_REGEX, "");
-}
-
-function normalizeSingleLine(value: string) {
-  return value.replace(/\s+/g, " ").trim();
-}
-
-function assertNoUrlLike(value: string) {
-  if (URL_SCHEME_REGEX.test(value) || WWW_REGEX.test(value) || DOMAIN_REGEX.test(value)) {
-    throw new Error("Please remove URLs from the title.");
-  }
-}
-
-function assertNoProfanity(value: string) {
-  if (profanityFilter.isProfane(value)) {
-    throw new Error("Please remove profanity from the title.");
-  }
-}
-
-function assertNoAsciiArtLike(rawValue: string, normalizedValue: string) {
-  if (BOX_DRAWING_OR_BRAILLE_REGEX.test(rawValue) || REPEATED_SYMBOL_REGEX.test(rawValue)) {
-    throw new Error("Please remove ASCII art from the title.");
-  }
-
-  const compact = normalizedValue.replace(/\s/g, "");
-  if (compact.length >= 20) {
-    const lettersAndNumbers = compact.match(/[\p{L}\p{N}]/gu)?.length ?? 0;
-    const ratio = lettersAndNumbers / compact.length;
-    if (ratio < 0.4) {
-      throw new Error("Please remove ASCII art from the title.");
-    }
-  }
-}
 
 function getErrorMessage(error: unknown) {
   if (error instanceof Error && error.message) {
@@ -76,21 +31,12 @@ async function addMediaItem(formData: FormData) {
   }
 
   try {
-    const cleanedRawTitle = sanitizeUserTextInput(rawTitle);
-    const title = normalizeSingleLine(cleanedRawTitle);
+    const title = sanitizeAndValidateTitle(rawTitle);
     const formatId = Number.parseInt(rawFormatId, 10);
 
     if (!title || !Number.isFinite(formatId)) {
       redirect("/manage?error=Title%20and%20format%20are%20required");
     }
-
-    if (title.length > 200) {
-      throw new Error("Title must be 200 characters or fewer.");
-    }
-
-    assertNoUrlLike(cleanedRawTitle);
-    assertNoProfanity(title);
-    assertNoAsciiArtLike(cleanedRawTitle, title);
 
     await sql`
       INSERT INTO media_items (title, format_id)
