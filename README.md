@@ -75,3 +75,7 @@ to build an online media collection of various formats from Utra HD Blu-ray down
 ## Demo
 You can try it out on Vercel at:
 https://nextjs-16-example.vercel.app/
+
+## AI Generated Wiki
+https://deepwiki.com/reyarqueza/nextjs-16-example
+
